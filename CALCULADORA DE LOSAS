@@ -1,0 +1,42 @@
+from fractions import Fraction
+
+def main():
+
+    def comprobar_numero(numero):
+        try:
+            if "/" in numero:
+                Fraction(numero)  # Intenta convertir la fracción
+            else:
+                float(numero)  # Intenta convertir el número en coma flotante
+            return True
+        except (ValueError, ZeroDivisionError):
+            return False
+
+    while True:
+        opcion = input("Qué desea hacer?\nPulse 1 para calcular\nPulse 2 para salir\n")
+
+        if opcion == "1":
+            espesor = input("Espesor de la losa en metros: ")
+            pesoe = input("Peso específico material (kg/m3): ")
+            destino = input("Peso de destino de losa (kg/m2): ")
+
+            if comprobar_numero(espesor) and comprobar_numero(pesoe) and comprobar_numero(destino):
+                espesor = Fraction(espesor) if "/" in espesor else float(espesor)
+                pesoe = Fraction(pesoe) if "/" in pesoe else float(pesoe)
+                destino = Fraction(destino) if "/" in destino else float(destino)
+
+                carga_muerta = round((pesoe * espesor) * 1.7, 2)
+                carga_total = round((carga_muerta * 1.2) + (1.6 * destino), 2)
+
+                print(f"Carga MUERTA: {carga_muerta} kg/m2")
+                print(f"Carga TOTAL: {carga_total} kg/m2 - {(carga_total/1000)} t/m2")
+            else:
+                print("Entradas inválidas. Asegúrese de ingresar números válidos.")
+        elif opcion == "2":
+            print("Saliendo...")
+            break
+        else:
+            print("Comando no reconocido. Ingrese 1 para calcular o 2 para salir.")
+
+if __name__ == "__main__":
+    main()
